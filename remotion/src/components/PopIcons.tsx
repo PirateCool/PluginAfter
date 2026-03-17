@@ -2,38 +2,32 @@ import React from 'react';
 import {Img} from 'remotion';
 import {TimelineEntry} from '../types';
 
-interface Props {
-  entry: TimelineEntry;
-  fps: number;
-}
-
-export const PopIcons: React.FC<Props> = ({entry, fps}) => {
+export const PopIcons: React.FC<{entry: TimelineEntry; fps: number}> = ({entry}) => {
   const images = entry.images ?? [];
 
   return (
-    <div className="flex gap-4">
+    <div style={{display: 'flex', gap: 16}}>
       {images.map((image, i) => {
         const src = image.resolvedUrl ?? image.path ?? '';
         return (
           <div
             key={i}
-            className="bg-black/75 rounded-xl p-2 flex items-center justify-center"
             style={{
-              border: '2px solid rgba(200, 155, 60, 0.3)',
-              width: '80px',
-              height: '80px',
+              backgroundColor: 'rgba(0, 0, 0, 0.82)',
+              borderRadius: 14,
+              padding: 10,
+              border: '2px solid rgba(200, 155, 60, 0.5)',
+              width: 100,
+              height: 100,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            {src && (
-              <Img
-                src={src}
-                style={{
-                  width: '64px',
-                  height: '64px',
-                  objectFit: 'contain',
-                  borderRadius: '8px',
-                }}
-              />
+            {src ? (
+              <Img src={src} style={{width: 80, height: 80, objectFit: 'contain', borderRadius: 8}} />
+            ) : (
+              <div style={{width: 80, height: 80, borderRadius: 8, backgroundColor: '#1a1a2e'}} />
             )}
           </div>
         );

@@ -12,9 +12,8 @@ interface Props {
 }
 
 /**
- * Layout: coach on the LEFT (~60%), overlays on the RIGHT (~40%).
- * Text overlays: right-aligned with 40px margin from right edge.
- * Visual overlays: shifted further left to not overlap text.
+ * Layout: coach LEFT (~55%), overlays RIGHT (~45%).
+ * Overlays vertically centered in the right zone.
  */
 export const OverlayWrapper: React.FC<Props> = ({entry, children, fps, placement}) => {
   const startFrame = Math.round(entry.startTime * fps);
@@ -30,21 +29,8 @@ export const OverlayWrapper: React.FC<Props> = ({entry, children, fps, placement
     blur: anim.blur,
   });
 
+  const posY = placement ? placement.y : (entry.position?.y ?? 200);
   const isVisual = entry.family === 'visual';
-  const posY = placement ? placement.y : (entry.position?.y ?? 80);
-
-  // Right margin from edge of frame
-  const RIGHT_MARGIN = 40;
-  // Visual overlays go further left (next to the text column)
-  const VISUAL_RIGHT = 700;
-
-  const posStyle: React.CSSProperties = {
-    position: 'absolute',
-    right: isVisual
-      ? (entry.position?.x ?? VISUAL_RIGHT)
-      : (entry.position?.x ?? RIGHT_MARGIN),
-    top: posY,
-  };
 
   return (
     <Sequence
@@ -55,7 +41,9 @@ export const OverlayWrapper: React.FC<Props> = ({entry, children, fps, placement
     >
       <div
         style={{
-          ...posStyle,
+          position: 'absolute',
+          right: isVisual ? 720 : 50,
+          top: posY,
           opacity: outro.opacity,
           transform: `translate(${outro.translateX}px, ${outro.translateY}px)`,
           filter: outro.blur > 0.1 ? `blur(${outro.blur}px)` : 'none',

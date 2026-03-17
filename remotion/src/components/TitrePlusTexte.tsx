@@ -1,24 +1,47 @@
 import React from 'react';
 import {TimelineEntry} from '../types';
 
-interface Props {
-  entry: TimelineEntry;
-  fps: number;
-}
-
-export const TitrePlusTexte: React.FC<Props> = ({entry, fps}) => {
+export const TitrePlusTexte: React.FC<{entry: TimelineEntry; fps: number}> = ({entry}) => {
   const title = entry.texts[0] ?? '';
   const subtitle = entry.texts[1] ?? '';
 
   return (
-    <div className="bg-black/75 rounded-xl px-8 py-5" style={{maxWidth: 640}}>
+    <div
+      style={{
+        width: 680,
+        backgroundColor: 'rgba(0, 0, 0, 0.82)',
+        borderRadius: 16,
+        padding: '28px 36px',
+      }}
+    >
       <h2
-        className="text-white text-2xl font-bold mb-2"
-        style={{borderBottom: '2px solid #C89B3C', paddingBottom: '8px'}}
+        style={{
+          color: '#FFFFFF',
+          fontSize: 38,
+          fontWeight: 800,
+          lineHeight: 1.2,
+          margin: 0,
+          paddingBottom: 14,
+          borderBottom: '3px solid #C89B3C',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+          letterSpacing: '-0.01em',
+        }}
       >
         {title}
       </h2>
-      <p className="text-gray-200 text-lg leading-relaxed mt-3">{subtitle}</p>
+      <p
+        style={{
+          color: '#D4D4D4',
+          fontSize: 28,
+          fontWeight: 400,
+          lineHeight: 1.4,
+          margin: 0,
+          marginTop: 16,
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+        }}
+      >
+        {subtitle}
+      </p>
     </div>
   );
 };

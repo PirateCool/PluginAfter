@@ -1,50 +1,44 @@
 /**
- * Placement system — port of the AE plugin's stack_anchor logic.
+ * Placement system — overlays on the RIGHT side, vertically centered.
  *
- * In a 1920x1080 comp, overlays are placed on the RIGHT side:
- * - Text family: stacked vertically from an anchor point
- * - Visual family: placed in a multi-column grid to the left of text
- *
- * This module computes Y positions to avoid overlap between
- * simultaneously visible overlays.
+ * In a 1920x1080 comp:
+ * - Coach video fills the screen, coach visible on LEFT
+ * - Text overlays stack vertically in the RIGHT zone, centered vertically
+ * - Visual overlays placed further left
  */
 
 import {TimelineEntry} from '../types';
 
-// ─── Layout constants (match AE plugin) ─────────────────────
+// ─── Layout constants ────────────────────────────────────────
 
-/** Right margin where overlays start (from left edge, ~60% = coach zone) */
-const STACK_ANCHOR_X = 1920 * 0.60;  // 1152px — overlays go from here to right edge
-const STACK_ANCHOR_Y = 80;           // top padding
+/** Y zone for overlays: vertically centered in the frame */
+const ZONE_TOP = 120;      // minimum top padding
+const ZONE_BOTTOM = 960;   // maximum bottom (1080 - 120)
+const ZONE_HEIGHT = ZONE_BOTTOM - ZONE_TOP; // 840px usable
 
-/** Spacing between stacked text overlays */
-const STACK_GAP_PX = 20;
+/** Spacing between stacked overlays */
+const STACK_GAP_PX = 24;
 
-/** Estimated heights per preset type (adjusted for 1080p sizing) */
+/** Estimated heights per preset type (with new larger sizing) */
 const PRESET_HEIGHTS: Record<string, number> = {
-  'Titre': 80,
-  'Texte': 100,
-  'Titre + Texte': 130,
-  'Bulletpoint': 280,
-  'Bulletpoint 3': 200,
-  'Bulletpoint 5': 260,
-  'Bulletpoint 9': 400,
-  'Erreur à éviter': 130,
-  'Astuce coach': 130,
-  'Checklist': 260,
-  'Conclusion': 120,
-  'Pop up': 160,
-  'Pop icons': 120,
-  'Champion focus': 140,
-  'Item focus': 140,
-  'Spell / Rune': 140,
-  'Objectif': 140,
+  'Titre': 110,
+  'Texte': 120,
+  'Titre + Texte': 170,
+  'Bulletpoint': 340,
+  'Bulletpoint 3': 260,
+  'Bulletpoint 5': 320,
+  'Bulletpoint 9': 480,
+  'Erreur à éviter': 170,
+  'Astuce coach': 170,
+  'Checklist': 320,
+  'Conclusion': 150,
+  'Pop up': 180,
+  'Pop icons': 140,
+  'Champion focus': 170,
+  'Item focus': 170,
+  'Spell / Rune': 170,
+  'Objectif': 170,
 };
-
-/** Visual family overlays go further left */
-const VISUAL_OFFSET_X = -320;
-const VISUAL_COL_WIDTH = 200;
-const VISUAL_MAX_COLS = 3;
 
 // ─── Overlap detection ──────────────────────────────────────
 
@@ -66,8 +60,8 @@ export interface PlacedEntry {
 
 /**
  * Compute non-overlapping positions for all entries.
- * Text family stacks vertically from top.
- * Visual family uses a multi-column layout to the left.
+ * Single overlay: vertically centered in the right zone.
+ * Multiple concurrent: stacked from a centered start point.
  */
 export function computePlacements(
   entries: TimelineEntry[],
@@ -75,76 +69,43 @@ export function computePlacements(
   compHeight: number = 1080
 ): PlacedEntry[] {
   const placements: PlacedEntry[] = [];
-
-  // Sort by startTime for consistent stacking
   const sorted = [...entries].sort((a, b) => a.startTime - b.startTime);
 
   for (const entry of sorted) {
-    const isVisual = entry.family === 'visual';
-    const estHeight = PRESET_HEIGHTS[entry.presetName] || 100;
-    const estWidth = isVisual ? 200 : 448; // max-w-md = 448px
+    const estHeight = PRESET_HEIGHTS[entry.presetName] || 120;
+    const estWidth = entry.family === 'visual' ? 220 : 680;
 
-    // Find all already-placed entries that overlap in time with this one
+    // Find concurrent already-placed entries
     const concurrent = placements.filter(p => overlapsTime(p.entry, entry));
+    const sameFamilyConcurrent = concurrent.filter(p => p.entry.family === entry.family);
 
-    if (isVisual) {
-      // Visual: place in columns to the left of the text stack
-      const visualConcurrent = concurrent.filter(p => p.entry.family === 'visual');
-
-      // Find first free column slot
-      let col = 0;
-      let yOffset = 0;
-      let placed = false;
-
-      for (col = 0; col < VISUAL_MAX_COLS && !placed; col++) {
-        const colX = VISUAL_OFFSET_X + col * VISUAL_COL_WIDTH;
-        let y = STACK_ANCHOR_Y;
-
-        // Check vertical overlap in this column
-        const inThisCol = visualConcurrent.filter(p => {
-          const px = p.x - (compWidth - STACK_ANCHOR_X);
-          return Math.abs(px - colX) < VISUAL_COL_WIDTH;
-        });
-
-        if (inThisCol.length === 0) {
-          yOffset = y;
-          placed = true;
-          break;
-        }
-
-        // Stack below existing in this column
-        for (const p of inThisCol) {
-          y = Math.max(y, p.y + p.height + STACK_GAP_PX);
-        }
-        yOffset = y;
-        placed = true;
-      }
-
-      if (!placed) {
-        yOffset = STACK_ANCHOR_Y;
-        col = 0;
-      }
+    if (sameFamilyConcurrent.length === 0) {
+      // Single overlay: vertically center it in the zone
+      const y = ZONE_TOP + Math.max(0, (ZONE_HEIGHT - estHeight) / 2);
 
       placements.push({
         entry,
-        x: compWidth - STACK_ANCHOR_X + VISUAL_OFFSET_X + (col > 0 ? col * VISUAL_COL_WIDTH : 0),
-        y: yOffset,
+        x: 0,
+        y: Math.round(y),
         width: estWidth,
         height: estHeight,
       });
     } else {
-      // Text: stack vertically from anchor
-      const textConcurrent = concurrent.filter(p => p.entry.family === 'text');
+      // Multiple concurrent: stack below the last one
+      let maxBottom = ZONE_TOP;
+      for (const p of sameFamilyConcurrent) {
+        maxBottom = Math.max(maxBottom, p.y + p.height + STACK_GAP_PX);
+      }
 
-      let y = STACK_ANCHOR_Y;
-      for (const p of textConcurrent) {
-        y = Math.max(y, p.y + p.height + STACK_GAP_PX);
+      // If stacking would go off screen, start from top
+      if (maxBottom + estHeight > ZONE_BOTTOM) {
+        maxBottom = ZONE_TOP;
       }
 
       placements.push({
         entry,
-        x: 0, // positioned via `right` in CSS, x=0 means default right margin
-        y,
+        x: 0,
+        y: Math.round(maxBottom),
         width: estWidth,
         height: estHeight,
       });
