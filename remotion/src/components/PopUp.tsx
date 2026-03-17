@@ -1,7 +1,6 @@
 import React from 'react';
 import {Img} from 'remotion';
 import {TimelineEntry} from '../types';
-import {OverlayWrapper} from './OverlayWrapper';
 
 interface Props {
   entry: TimelineEntry;
@@ -13,21 +12,19 @@ export const PopUp: React.FC<Props> = ({entry, fps}) => {
   const src = image?.resolvedUrl ?? image?.path ?? '';
 
   return (
-    <OverlayWrapper entry={entry} fps={fps}>
-      <div
-        className="rounded-xl overflow-hidden"
-        style={{
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
-          border: '2px solid rgba(200, 155, 60, 0.4)',
-        }}
-      >
-        {src && (
-          <Img
-            src={src}
-            style={{display: 'block', maxWidth: '400px', maxHeight: '400px', objectFit: 'contain'}}
-          />
-        )}
-      </div>
-    </OverlayWrapper>
+    <div
+      className="rounded-xl overflow-hidden"
+      style={{
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
+        border: '2px solid rgba(200, 155, 60, 0.4)',
+      }}
+    >
+      {src && (
+        <Img
+          src={src}
+          style={{display: 'block', maxWidth: '400px', maxHeight: '400px', objectFit: 'contain'}}
+        />
+      )}
+    </div>
   );
 };

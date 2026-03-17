@@ -138,39 +138,21 @@ export function useOutroAnimation(params: {
 } {
   const {startFrame, durationFrames, fade, moveX, moveY, blur} = params;
 
+  // Always call all hooks unconditionally (React Rules of Hooks)
+  const fadeResult = useFadeOut({startFrame, durationFrames, fadeDurationSeconds: fade});
+  const slideResult = useSlideOut({startFrame, durationFrames, fadeDurationSeconds: fade, moveX, moveY});
+  const blurResult = useBlurOut({startFrame, durationFrames, fadeDurationSeconds: fade, blurMax: blur});
+
   const needsFade = fade > 0;
   const needsMove =
     needsFade && (Math.abs(moveX) > 0.001 || Math.abs(moveY) > 0.001);
   const needsBlur = needsFade && blur > 0.001;
 
-  const opacity = needsFade
-    ? useFadeOut({startFrame, durationFrames, fadeDurationSeconds: fade})
-    : 1;
-
-  const slide = needsMove
-    ? useSlideOut({
-        startFrame,
-        durationFrames,
-        fadeDurationSeconds: fade,
-        moveX,
-        moveY,
-      })
-    : {x: 0, y: 0};
-
-  const blurValue = needsBlur
-    ? useBlurOut({
-        startFrame,
-        durationFrames,
-        fadeDurationSeconds: fade,
-        blurMax: blur,
-      })
-    : 0;
-
   return {
-    opacity,
-    translateX: slide.x,
-    translateY: slide.y,
-    blur: blurValue,
+    opacity: needsFade ? fadeResult : 1,
+    translateX: needsMove ? slideResult.x : 0,
+    translateY: needsMove ? slideResult.y : 0,
+    blur: needsBlur ? blurResult : 0,
   };
 }
 
