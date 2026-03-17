@@ -9,6 +9,9 @@ triggers:
   - preset overlay
   - timeline overlay
   - csv timeline
+  - transcript
+  - derush
+  - srt overlay
 ---
 
 ## When to use
@@ -35,6 +38,7 @@ Read individual rule files for domain-specific patterns:
 - [rules/preset-mapping.md](rules/preset-mapping.md) - Mapping AE presets to React components
 - [rules/media-resolution.md](rules/media-resolution.md) - MediaDB image_key resolution and asset management
 - [rules/ae-remotion-bridge.md](rules/ae-remotion-bridge.md) - Correspondence between AE concepts and Remotion equivalents
+- [rules/transcript-workflow.md](rules/transcript-workflow.md) - Converting derush/SRT transcripts to overlay timelines
 
 ## Key conventions
 

@@ -6,7 +6,8 @@
   "scripts": {
     "preview": "remotion studio",
     "build": "remotion render src/index.tsx OverlayComposition out/video.mp4",
-    "render": "remotion render",
+    "render": "remotion render src/index.tsx OverlayComposition",
+    "render:sample": "remotion render src/index.tsx OverlayComposition out/sample.mp4 --frames=0-250",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -1,0 +1,47 @@
+1
+00:00:02,000 --> 00:00:06,000
+Aujourd'hui on va parler du wave management
+
+2
+00:00:08,000 --> 00:00:13,000
+Le slow push c'est quand tu laisses les minions s'accumuler
+
+3
+00:00:14,000 --> 00:00:18,000
+Tu tues juste les caster minions adverses
+
+4
+00:00:20,000 --> 00:00:24,000
+Ça crée une vague massive qui crash sous la tour
+
+5
+00:00:26,000 --> 00:00:30,000
+Le freeze c'est l'inverse
+
+6
+00:00:30,500 --> 00:00:35,000
+Tu gardes la vague devant ta tour en last-hittant uniquement
+
+7
+00:00:36,000 --> 00:00:40,000
+C'est très puissant quand tu es en avance
+
+8
+00:00:42,000 --> 00:00:47,000
+Trois règles importantes pour le wave management
+
+9
+00:00:47,500 --> 00:00:51,000
+Première règle: toujours regarder la map avant de push
+
+10
+00:00:51,500 --> 00:00:55,000
+Deuxième règle: adapter ton push au timer des objectifs
+
+11
+00:00:55,500 --> 00:00:59,000
+Troisième règle: ne jamais push sans vision du jungler
+
+12
+00:01:02,000 --> 00:01:08,000
+Pour résumer, le wave management te donne le contrôle total de ta lane

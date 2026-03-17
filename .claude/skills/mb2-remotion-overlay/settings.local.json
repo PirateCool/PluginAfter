@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(npx --yes create-video@latest --no-open --no-git .)",
+      "Bash(npx tsc:*)",
+      "Bash(mkdir -p /Users/ugogessaugogessa/Documents/Code/PluginAfter/.claude/skills/mb2-remotion-overlay/rules)",
+      "Bash(cp -r /Users/ugogessaugogessa/.claude/skills/mb2-remotion-overlay/* /Users/ugogessaugogessa/Documents/Code/PluginAfter/.claude/skills/mb2-remotion-overlay/)",
+      "Bash(gh repo:*)",
+      "Bash(textutil -convert txt -output /tmp/derush-intro.txt \"/Users/ugogessaugogessa/Documents/Code/PluginAfter/Derush Intro.docx\")"
+    ]
+  }
+}
