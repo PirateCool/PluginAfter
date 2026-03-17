@@ -12,7 +12,7 @@ import {TimelineEntry} from '../types';
 // ─── Layout constants ────────────────────────────────────────
 
 /** Y zone for overlays: top-right corner of the frame */
-const ZONE_TOP = 50;       // top padding — haut-droit
+const ZONE_TOP = 80;       // top padding — haut-droit
 const ZONE_BOTTOM = 900;   // maximum bottom
 const ZONE_HEIGHT = ZONE_BOTTOM - ZONE_TOP;
 
