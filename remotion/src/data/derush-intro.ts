@@ -62,22 +62,23 @@ export const derushIntroTimeline: TimelineData = {
       animation: {fade: 0.35, moveX: 0, moveY: -100, blur: 50},
     },
 
-    // 0:51 — Bulletpoint 3: Three keys to improve
+    // 0:51 — Bulletpoint: Three keys (synced to transcript timestamps)
+    // Coach says: 0:51 "trois méthodes", 0:55 "sérieux", 1:02 "régulièrement", 1:05 "routine"
     {
       id: 'di-5',
-      presetName: 'Bulletpoint 3',
-      presetId: 'bp3-1',
+      presetName: 'Bulletpoint',
+      presetId: 'bp-1',
       startTime: 51,
-      duration: 8,
+      duration: 18,
       texts: ['3 clés pour progresser'],
       bullets: [
-        {text: 'Joue sérieusement', inOffset: 1},
-        {text: 'Pratique régulièrement', inOffset: 3},
-        {text: 'Aie une routine d\'entraînement', inOffset: 5},
+        {text: 'Joue sérieusement', inOffset: 4},
+        {text: 'Pratique régulièrement', inOffset: 11},
+        {text: 'Aie une routine d\'entraînement', inOffset: 14},
       ],
       images: [],
       family: 'text',
-      animation: {fade: 0.35, moveX: 0, moveY: -100, blur: 50},
+      animation: {fade: 0.5, moveX: 0, moveY: -100, blur: 50},
     },
 
     // 1:12 — Astuce coach: Regularity matters
@@ -122,18 +123,19 @@ export const derushIntroTimeline: TimelineData = {
       animation: {fade: 0.35, moveX: 0, moveY: -100, blur: 50},
     },
 
-    // 2:01 — Bulletpoint 3: Quick learning steps
+    // 2:01 — Bulletpoint: Quick learning steps (synced to transcript)
+    // Coach says: 2:01 "prend un sujet", 2:08 "review", 2:16 "cas pratiques"
     {
       id: 'di-9',
-      presetName: 'Bulletpoint 3',
-      presetId: 'bp3-2',
+      presetName: 'Bulletpoint',
+      presetId: 'bp-2',
       startTime: 121,
-      duration: 8,
+      duration: 20,
       texts: ['Apprendre vite sur un sujet'],
       bullets: [
-        {text: 'Choisis un seul sujet', inOffset: 1},
-        {text: 'Review tes games', inOffset: 3},
-        {text: 'Regarde les cas pratiques', inOffset: 5},
+        {text: 'Choisis un seul sujet', inOffset: 0},
+        {text: 'Review tes games', inOffset: 7},
+        {text: 'Regarde les cas pratiques', inOffset: 15},
       ],
       images: [],
       family: 'text',
