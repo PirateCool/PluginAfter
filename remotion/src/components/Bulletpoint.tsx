@@ -24,8 +24,8 @@ const BulletItem: React.FC<{
         filter: anim.blur > 0.1 ? `blur(${anim.blur}px)` : 'none',
       }}
     >
-      <span style={{color: '#C89B3C', fontSize: '20px', lineHeight: '28px'}}>&#9670;</span>
-      <span className="text-white text-lg">{text}</span>
+      <span style={{color: '#C89B3C', fontSize: '24px', lineHeight: '28px'}}>&#9670;</span>
+      <span className="text-white text-base">{text}</span>
     </li>
   );
 };
@@ -39,16 +39,16 @@ export const Bulletpoint: React.FC<Props> = ({entry, fps}) => {
   const animDurationFrames = Math.round(0.3 * configFps);
 
   return (
-    <div className="bg-gray-900/80 rounded-xl px-7 py-5 max-w-lg">
+    <div className="bg-black/75 rounded-xl px-8 py-5" style={{maxWidth: 640}}>
       {title && (
         <h3
-          className="text-white text-2xl font-bold mb-3"
+          className="text-white text-xl font-bold mb-3"
           style={{borderBottom: '2px solid #C89B3C', paddingBottom: '6px'}}
         >
           {title}
         </h3>
       )}
-      <ul className="mt-2 space-y-1">
+      <ul className="mt-2 space-y-2">
         {bullets.map((bullet, i) => {
           const offsetSec = bullet.inOffset ?? i * defaultStagger;
           const revealFrame = Math.round(offsetSec * configFps);

@@ -11,6 +11,11 @@ interface Props {
   placement?: PlacedEntry;
 }
 
+/**
+ * Layout: coach on the LEFT (~60%), overlays on the RIGHT (~40%).
+ * Text overlays: right-aligned with 40px margin from right edge.
+ * Visual overlays: shifted further left to not overlap text.
+ */
 export const OverlayWrapper: React.FC<Props> = ({entry, children, fps, placement}) => {
   const startFrame = Math.round(entry.startTime * fps);
   const durationFrames = Math.round(entry.duration * fps);
@@ -26,23 +31,20 @@ export const OverlayWrapper: React.FC<Props> = ({entry, children, fps, placement
   });
 
   const isVisual = entry.family === 'visual';
+  const posY = placement ? placement.y : (entry.position?.y ?? 80);
 
-  // Use computed placement if available, otherwise fall back to manual position or defaults
-  const posY = placement ? placement.y : (entry.position?.y ?? 100);
+  // Right margin from edge of frame
+  const RIGHT_MARGIN = 40;
+  // Visual overlays go further left (next to the text column)
+  const VISUAL_RIGHT = 700;
 
-  // Text overlays: positioned from the right edge
-  // Visual overlays: positioned from the right but shifted further left
-  const posStyle: React.CSSProperties = isVisual
-    ? {
-        position: 'absolute',
-        right: placement ? (placement.x > 0 ? placement.x : 100 + Math.abs(placement.x)) : (entry.position?.x ?? 420),
-        top: posY,
-      }
-    : {
-        position: 'absolute',
-        right: entry.position?.x ?? 60,
-        top: posY,
-      };
+  const posStyle: React.CSSProperties = {
+    position: 'absolute',
+    right: isVisual
+      ? (entry.position?.x ?? VISUAL_RIGHT)
+      : (entry.position?.x ?? RIGHT_MARGIN),
+    top: posY,
+  };
 
   return (
     <Sequence
@@ -57,7 +59,6 @@ export const OverlayWrapper: React.FC<Props> = ({entry, children, fps, placement
           opacity: outro.opacity,
           transform: `translate(${outro.translateX}px, ${outro.translateY}px)`,
           filter: outro.blur > 0.1 ? `blur(${outro.blur}px)` : 'none',
-          transition: 'none',
         }}
       >
         {children}

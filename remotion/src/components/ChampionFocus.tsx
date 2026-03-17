@@ -15,15 +15,15 @@ export const ChampionFocus: React.FC<Props> = ({entry, fps}) => {
 
   return (
     <div
-      className="bg-gray-900/80 rounded-xl flex items-center gap-5 px-5 py-4"
-      style={{border: '2px solid rgba(200, 155, 60, 0.4)'}}
+      className="bg-black/75 rounded-xl flex items-center gap-5 px-8 py-5"
+      style={{maxWidth: 640, border: '2px solid rgba(200, 155, 60, 0.4)'}}
     >
       {src && (
         <div
           className="rounded-lg overflow-hidden flex-shrink-0"
           style={{
-            width: '80px',
-            height: '80px',
+            width: '96px',
+            height: '96px',
             border: '2px solid #C89B3C',
           }}
         >
@@ -35,7 +35,7 @@ export const ChampionFocus: React.FC<Props> = ({entry, fps}) => {
       )}
       <div className="flex flex-col">
         <span
-          className="text-2xl font-bold"
+          className="text-xl font-bold"
           style={{color: '#C89B3C'}}
         >
           {name}

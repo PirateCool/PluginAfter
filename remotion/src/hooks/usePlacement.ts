@@ -13,32 +13,32 @@ import {TimelineEntry} from '../types';
 
 // ─── Layout constants (match AE plugin) ─────────────────────
 
-/** Anchor point for the stack — right side of the screen */
-const STACK_ANCHOR_X = 1920 * 0.78;  // ~1498px from left = right side
-const STACK_ANCHOR_Y = 100;          // top padding
+/** Right margin where overlays start (from left edge, ~60% = coach zone) */
+const STACK_ANCHOR_X = 1920 * 0.60;  // 1152px — overlays go from here to right edge
+const STACK_ANCHOR_Y = 80;           // top padding
 
 /** Spacing between stacked text overlays */
-const STACK_GAP_PX = 24;
+const STACK_GAP_PX = 20;
 
-/** Estimated heights per preset type */
+/** Estimated heights per preset type (adjusted for 1080p sizing) */
 const PRESET_HEIGHTS: Record<string, number> = {
-  'Titre': 64,
-  'Texte': 80,
-  'Titre + Texte': 110,
-  'Bulletpoint': 220,
-  'Bulletpoint 3': 160,
-  'Bulletpoint 5': 200,
-  'Bulletpoint 9': 320,
-  'Erreur à éviter': 110,
-  'Astuce coach': 110,
-  'Checklist': 200,
-  'Conclusion': 100,
+  'Titre': 80,
+  'Texte': 100,
+  'Titre + Texte': 130,
+  'Bulletpoint': 280,
+  'Bulletpoint 3': 200,
+  'Bulletpoint 5': 260,
+  'Bulletpoint 9': 400,
+  'Erreur à éviter': 130,
+  'Astuce coach': 130,
+  'Checklist': 260,
+  'Conclusion': 120,
   'Pop up': 160,
-  'Pop icons': 100,
-  'Champion focus': 120,
-  'Item focus': 120,
-  'Spell / Rune': 120,
-  'Objectif': 120,
+  'Pop icons': 120,
+  'Champion focus': 140,
+  'Item focus': 140,
+  'Spell / Rune': 140,
+  'Objectif': 140,
 };
 
 /** Visual family overlays go further left */
