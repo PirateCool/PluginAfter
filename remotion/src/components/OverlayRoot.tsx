@@ -1,6 +1,10 @@
 import React, {useMemo} from 'react';
 import {AbsoluteFill, useVideoConfig} from 'remotion';
-import {OverlayRootProps, TimelineEntry} from '../types';
+import {TimelineEntry} from '../types';
+import {z} from 'zod';
+import {OverlayCompositionSchema} from '../schemas';
+
+type OverlayRootProps = z.infer<typeof OverlayCompositionSchema>;
 import {Titre} from './Titre';
 import {Texte} from './Texte';
 import {TitrePlusTexte} from './TitrePlusTexte';

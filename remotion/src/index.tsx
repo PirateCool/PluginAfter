@@ -2,10 +2,10 @@ import {registerRoot} from 'remotion';
 import {Composition, Folder} from 'remotion';
 import React from 'react';
 import {OverlayRoot} from './components/OverlayRoot';
-import {CoachingComposition, CoachingProps} from './components/CoachingComposition';
-import {OverlayRootProps} from './types';
+import {CoachingComposition} from './components/CoachingComposition';
 import {sampleTimeline} from './data/sample';
 import {derushIntroTimeline} from './data/derush-intro';
+import {CoachingCompositionSchema, OverlayCompositionSchema} from './schemas';
 import './styles/global.css';
 
 const RemotionRoot: React.FC = () => {
@@ -14,16 +14,17 @@ const RemotionRoot: React.FC = () => {
       {/* Main composition: coach video + overlays from real derush */}
       <Composition
         id="DerushIntro"
-        component={CoachingComposition as unknown as React.FC}
+        component={CoachingComposition}
+        schema={CoachingCompositionSchema}
         durationInFrames={Math.round(derushIntroTimeline.durationInSeconds * derushIntroTimeline.fps)}
         fps={derushIntroTimeline.fps}
         width={derushIntroTimeline.width}
         height={derushIntroTimeline.height}
         defaultProps={{
           timeline: derushIntroTimeline,
-        } satisfies CoachingProps}
+        }}
         calculateMetadata={async ({props}) => {
-          const tl = (props as unknown as CoachingProps).timeline || derushIntroTimeline;
+          const tl = props.timeline || derushIntroTimeline;
           return {
             durationInFrames: Math.round(tl.durationInSeconds * tl.fps),
             fps: tl.fps,
@@ -34,10 +35,11 @@ const RemotionRoot: React.FC = () => {
       />
 
       <Folder name="Tests">
-        {/* Overlay-only composition (no background video) */}
+        {/* Overlay-only (sample with all preset types) */}
         <Composition
           id="OverlayComposition"
-          component={OverlayRoot as unknown as React.FC}
+          component={OverlayRoot}
+          schema={OverlayCompositionSchema}
           durationInFrames={Math.round(sampleTimeline.durationInSeconds * sampleTimeline.fps)}
           fps={sampleTimeline.fps}
           width={sampleTimeline.width}
@@ -46,7 +48,7 @@ const RemotionRoot: React.FC = () => {
             timeline: sampleTimeline,
           }}
           calculateMetadata={async ({props}) => {
-            const tl = (props as unknown as OverlayRootProps).timeline || sampleTimeline;
+            const tl = props.timeline || sampleTimeline;
             return {
               durationInFrames: Math.round(tl.durationInSeconds * tl.fps),
               fps: tl.fps,
@@ -56,10 +58,11 @@ const RemotionRoot: React.FC = () => {
           }}
         />
 
-        {/* Derush overlays without video background */}
+        {/* Derush overlays without video */}
         <Composition
           id="DerushOverlayOnly"
-          component={OverlayRoot as unknown as React.FC}
+          component={OverlayRoot}
+          schema={OverlayCompositionSchema}
           durationInFrames={Math.round(derushIntroTimeline.durationInSeconds * derushIntroTimeline.fps)}
           fps={derushIntroTimeline.fps}
           width={derushIntroTimeline.width}

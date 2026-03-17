@@ -1,6 +1,8 @@
 import React, {useMemo} from 'react';
 import {AbsoluteFill, useVideoConfig} from 'remotion';
-import {OverlayRootProps, TimelineEntry} from '../types';
+import {TimelineEntry} from '../types';
+import {z} from 'zod';
+import {CoachingCompositionSchema} from '../schemas';
 import {Titre} from './Titre';
 import {Texte} from './Texte';
 import {TitrePlusTexte} from './TitrePlusTexte';
@@ -33,9 +35,7 @@ const COMPONENT_MAP: Record<string, React.FC<{entry: TimelineEntry; fps: number}
   'Checklist': Bulletpoint,
 };
 
-export type CoachingProps = OverlayRootProps & {
-  videoSrc?: string;
-};
+export type CoachingProps = z.infer<typeof CoachingCompositionSchema>;
 
 /**
  * Full coaching composition:
