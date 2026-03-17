@@ -8,20 +8,20 @@ export const Texte: React.FC<{entry: TimelineEntry; fps: number}> = ({entry}) =>
     <div
       style={{
         width: 680,
-        backgroundColor: 'rgba(0, 0, 0, 0.82)',
-        borderRadius: 16,
+        backgroundColor: 'rgba(25, 30, 38, 0.88)',
+        borderRadius: 4,
         padding: '24px 36px',
-        borderLeft: '4px solid rgba(200, 155, 60, 0.5)',
+        borderLeft: '4px solid rgba(255, 222, 128, 0.15)',
       }}
     >
       <p
         style={{
-          color: '#F0F0F0',
+          color: '#FCF9F2',
           fontSize: 32,
-          fontWeight: 500,
+          fontWeight: 400,
           lineHeight: 1.4,
           margin: 0,
-          fontFamily: 'system-ui, -apple-system, sans-serif',
+          fontFamily: "'Saira', system-ui, sans-serif",
         }}
       >
         {text}

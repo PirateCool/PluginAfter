@@ -39,11 +39,13 @@ Read individual rule files for domain-specific patterns:
 - [rules/media-resolution.md](rules/media-resolution.md) - MediaDB image_key resolution and asset management
 - [rules/ae-remotion-bridge.md](rules/ae-remotion-bridge.md) - Correspondence between AE concepts and Remotion equivalents
 - [rules/transcript-workflow.md](rules/transcript-workflow.md) - Converting derush/SRT transcripts to overlay timelines
+- [rules/riot-assets.md](rules/riot-assets.md) - Riot Data Dragon CDN URLs for champions, items, spells, runes
 
 ## Key conventions
 
 - All overlay components accept `{entry: TimelineEntry; fps: number}` as props
-- Animations use `useCurrentFrame()` + `interpolate()`, never CSS transitions
+- Animations use `useCurrentFrame()` + `spring()` / `interpolate()`, never CSS transitions
 - Components are wrapped in `<OverlayWrapper>` for positioning and outro animations
 - Preset names map to components via `COMPONENT_MAP` in `OverlayRoot.tsx`
-- The LoL theme uses `#C89B3C` gold accents on dark backgrounds
+- Brand: Skillcamp.gg — `#FFDE80` gold accents, `#191E26` dark bg, font Saira, sharp corners (borderRadius: 4)
+- Images from Riot Data Dragon CDN (free, no API key needed)

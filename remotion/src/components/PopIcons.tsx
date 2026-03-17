@@ -13,10 +13,10 @@ export const PopIcons: React.FC<{entry: TimelineEntry; fps: number}> = ({entry})
           <div
             key={i}
             style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.82)',
-              borderRadius: 14,
+              backgroundColor: 'rgba(25, 30, 38, 0.88)',
+              borderRadius: 4,
               padding: 10,
-              border: '2px solid rgba(200, 155, 60, 0.5)',
+              border: '1px solid rgba(255, 222, 128, 0.2)',
               width: 100,
               height: 100,
               display: 'flex',
@@ -25,9 +25,9 @@ export const PopIcons: React.FC<{entry: TimelineEntry; fps: number}> = ({entry})
             }}
           >
             {src ? (
-              <Img src={src} style={{width: 80, height: 80, objectFit: 'contain', borderRadius: 8}} />
+              <Img src={src} style={{width: 80, height: 80, objectFit: 'contain', borderRadius: 4}} />
             ) : (
-              <div style={{width: 80, height: 80, borderRadius: 8, backgroundColor: '#1a1a2e'}} />
+              <div style={{width: 80, height: 80, borderRadius: 4, backgroundColor: '#232A35'}} />
             )}
           </div>
         );

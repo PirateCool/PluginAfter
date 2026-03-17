@@ -9,17 +9,17 @@ export const PopUp: React.FC<{entry: TimelineEntry; fps: number}> = ({entry}) =>
   return (
     <div
       style={{
-        backgroundColor: 'rgba(0, 0, 0, 0.82)',
-        borderRadius: 16,
+        backgroundColor: 'rgba(25, 30, 38, 0.88)',
+        borderRadius: 4,
         padding: 12,
-        border: '3px solid #C89B3C',
+        border: '1px solid #FFDE80',
         boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
       }}
     >
       {src ? (
-        <Img src={src} style={{width: 160, height: 160, objectFit: 'cover', borderRadius: 10, display: 'block'}} />
+        <Img src={src} style={{width: 160, height: 160, objectFit: 'cover', borderRadius: 4, display: 'block'}} />
       ) : (
-        <div style={{width: 160, height: 160, borderRadius: 10, backgroundColor: '#1a1a2e'}} />
+        <div style={{width: 160, height: 160, borderRadius: 4, backgroundColor: '#232A35'}} />
       )}
     </div>
   );

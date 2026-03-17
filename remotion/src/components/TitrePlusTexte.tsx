@@ -9,21 +9,21 @@ export const TitrePlusTexte: React.FC<{entry: TimelineEntry; fps: number}> = ({e
     <div
       style={{
         width: 680,
-        backgroundColor: 'rgba(0, 0, 0, 0.82)',
-        borderRadius: 16,
+        backgroundColor: 'rgba(25, 30, 38, 0.88)',
+        borderRadius: 4,
         padding: '28px 36px',
       }}
     >
       <h2
         style={{
-          color: '#FFFFFF',
+          color: '#FCF9F2',
           fontSize: 38,
-          fontWeight: 800,
+          fontWeight: 700,
           lineHeight: 1.2,
           margin: 0,
           paddingBottom: 14,
-          borderBottom: '3px solid #C89B3C',
-          fontFamily: 'system-ui, -apple-system, sans-serif',
+          borderBottom: '3px solid #FFDE80',
+          fontFamily: "'Saira', system-ui, sans-serif",
           letterSpacing: '-0.01em',
         }}
       >
@@ -31,13 +31,13 @@ export const TitrePlusTexte: React.FC<{entry: TimelineEntry; fps: number}> = ({e
       </h2>
       <p
         style={{
-          color: '#D4D4D4',
+          color: 'rgba(252, 249, 242, 0.7)',
           fontSize: 28,
           fontWeight: 400,
           lineHeight: 1.4,
           margin: 0,
           marginTop: 16,
-          fontFamily: 'system-ui, -apple-system, sans-serif',
+          fontFamily: "'Saira', system-ui, sans-serif",
         }}
       >
         {subtitle}

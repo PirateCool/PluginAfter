@@ -44,22 +44,22 @@ const BulletItem: React.FC<{
       {/* Gold diamond marker with glow */}
       <span
         style={{
-          color: '#C89B3C',
+          color: '#FFDE80',
           fontSize: 24,
           lineHeight: '30px',
           flexShrink: 0,
-          textShadow: '0 0 8px rgba(200, 155, 60, 0.6)',
+          textShadow: '0 0 8px rgba(255, 222, 128, 0.4)',
         }}
       >
         &#9670;
       </span>
       <span
         style={{
-          color: '#F0F0F0',
+          color: '#FCF9F2',
           fontSize: 30,
-          fontWeight: 600,
+          fontWeight: 400,
           lineHeight: 1.3,
-          fontFamily: 'system-ui, -apple-system, sans-serif',
+          fontFamily: "'Saira', system-ui, sans-serif",
         }}
       >
         {text}
@@ -99,13 +99,13 @@ const TitleReveal: React.FC<{
     >
       <h3
         style={{
-          color: '#FFFFFF',
+          color: '#FCF9F2',
           fontSize: 36,
-          fontWeight: 800,
+          fontWeight: 700,
           lineHeight: 1.2,
           margin: 0,
           paddingBottom: 14,
-          fontFamily: 'system-ui, -apple-system, sans-serif',
+          fontFamily: "'Saira', system-ui, sans-serif",
         }}
       >
         {text}
@@ -114,10 +114,10 @@ const TitleReveal: React.FC<{
       <div
         style={{
           height: 3,
-          backgroundColor: '#C89B3C',
+          backgroundColor: '#FFDE80',
           width: `${lineWidth}%`,
           borderRadius: 2,
-          boxShadow: '0 0 10px rgba(200, 155, 60, 0.4)',
+          boxShadow: '0 0 10px rgba(255, 222, 128, 0.4)',
         }}
       />
     </div>
@@ -157,8 +157,8 @@ export const Bulletpoint: React.FC<{entry: TimelineEntry; fps: number}> = ({entr
     <div
       style={{
         width: 680,
-        backgroundColor: 'rgba(0, 0, 0, 0.82)',
-        borderRadius: 16,
+        backgroundColor: 'rgba(25, 30, 38, 0.88)',
+        borderRadius: 4,
         padding: '28px 36px',
       }}
     >

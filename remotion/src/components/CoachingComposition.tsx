@@ -1,8 +1,12 @@
 import React, {useMemo} from 'react';
 import {AbsoluteFill, useVideoConfig} from 'remotion';
+import {loadFont} from '@remotion/google-fonts/Saira';
 import {TimelineEntry} from '../types';
 import {z} from 'zod';
 import {CoachingCompositionSchema} from '../schemas';
+
+// Load Saira font (Skillcamp.gg brand)
+const {fontFamily} = loadFont();
 import {Titre} from './Titre';
 import {Texte} from './Texte';
 import {TitrePlusTexte} from './TitrePlusTexte';
@@ -73,7 +77,7 @@ export const CoachingComposition: React.FC<CoachingProps> = ({timeline, videoSrc
             top: 0,
             width: '45%',
             height: '100%',
-            background: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.5) 100%)',
+            background: 'linear-gradient(to right, transparent 0%, rgba(25,30,38,0.35) 30%, rgba(25,30,38,0.5) 100%)',
             pointerEvents: 'none',
           }}
         />
