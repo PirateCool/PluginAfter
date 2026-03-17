@@ -1,0 +1,25 @@
+import React from 'react';
+import {TimelineEntry} from '../types';
+import {OverlayWrapper} from './OverlayWrapper';
+
+interface Props {
+  entry: TimelineEntry;
+  fps: number;
+}
+
+export const Titre: React.FC<Props> = ({entry, fps}) => {
+  const title = entry.texts[0] ?? '';
+
+  return (
+    <OverlayWrapper entry={entry} fps={fps}>
+      <div className="bg-black/70 rounded-xl px-8 py-5">
+        <h1
+          className="text-white text-4xl font-bold"
+          style={{borderLeft: '4px solid #C89B3C', paddingLeft: '16px'}}
+        >
+          {title}
+        </h1>
+      </div>
+    </OverlayWrapper>
+  );
+};

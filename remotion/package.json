@@ -1,0 +1,29 @@
+{
+  "name": "remotion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preview": "remotion studio",
+    "build": "remotion render src/index.tsx OverlayComposition out/video.mp4",
+    "render": "remotion render",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/cli": "^4.0.436",
+    "@remotion/player": "^4.0.436",
+    "@types/react": "^19.2.14",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.436",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.1"
+  }
+}

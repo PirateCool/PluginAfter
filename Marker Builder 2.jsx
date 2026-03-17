@@ -56,8 +56,118 @@
     return "null";
   }
   function parseJSON(s){
-    return eval("(" + s + ")");
+    var _json = { pos: 0, src: String(s || "") };
+    function _skipWS(){
+      while(_json.pos < _json.src.length){
+        var c = _json.src.charAt(_json.pos);
+        if(c === " " || c === "\t" || c === "\r" || c === "\n") _json.pos++;
+        else break;
+      }
+    }
+    function _peek(){ return _json.pos < _json.src.length ? _json.src.charAt(_json.pos) : ""; }
+    function _next(){ return _json.pos < _json.src.length ? _json.src.charAt(_json.pos++) : ""; }
+    function _expect(ch){
+      _skipWS();
+      if(_next() !== ch) throw new Error("JSON parse: expected '" + ch + "' at pos " + (_json.pos - 1));
+    }
+    function _parseString(){
+      _expect("\"");
+      var out = "";
+      while(_json.pos < _json.src.length){
+        var c = _next();
+        if(c === "\"") return out;
+        if(c === "\\"){
+          var e = _next();
+          if(e === "\"") out += "\"";
+          else if(e === "\\") out += "\\";
+          else if(e === "/") out += "/";
+          else if(e === "n") out += "\n";
+          else if(e === "r") out += "\r";
+          else if(e === "t") out += "\t";
+          else if(e === "b") out += "\b";
+          else if(e === "f") out += "\f";
+          else if(e === "u"){
+            var hex = _json.src.substr(_json.pos, 4);
+            _json.pos += 4;
+            out += String.fromCharCode(parseInt(hex, 16));
+          }
+          else out += e;
+        }else{
+          out += c;
+        }
+      }
+      throw new Error("JSON parse: unterminated string");
+    }
+    function _parseNumber(){
+      var start = _json.pos;
+      if(_peek() === "-") _json.pos++;
+      while(_json.pos < _json.src.length && "0123456789".indexOf(_json.src.charAt(_json.pos)) >= 0) _json.pos++;
+      if(_peek() === "."){
+        _json.pos++;
+        while(_json.pos < _json.src.length && "0123456789".indexOf(_json.src.charAt(_json.pos)) >= 0) _json.pos++;
+      }
+      if(_peek() === "e" || _peek() === "E"){
+        _json.pos++;
+        if(_peek() === "+" || _peek() === "-") _json.pos++;
+        while(_json.pos < _json.src.length && "0123456789".indexOf(_json.src.charAt(_json.pos)) >= 0) _json.pos++;
+      }
+      return parseFloat(_json.src.substring(start, _json.pos));
+    }
+    function _parseLiteral(word, value){
+      for(var i = 0; i < word.length; i++){
+        if(_next() !== word.charAt(i)) throw new Error("JSON parse: expected '" + word + "'");
+      }
+      return value;
+    }
+    function _parseValue(){
+      _skipWS();
+      var c = _peek();
+      if(c === "\"") return _parseString();
+      if(c === "{") return _parseObject();
+      if(c === "[") return _parseArray();
+      if(c === "t") return _parseLiteral("true", true);
+      if(c === "f") return _parseLiteral("false", false);
+      if(c === "n") return _parseLiteral("null", null);
+      if(c === "-" || (c >= "0" && c <= "9")) return _parseNumber();
+      throw new Error("JSON parse: unexpected char '" + c + "' at pos " + _json.pos);
+    }
+    function _parseArray(){
+      _expect("[");
+      var arr = [];
+      _skipWS();
+      if(_peek() === "]"){ _json.pos++; return arr; }
+      while(true){
+        arr.push(_parseValue());
+        _skipWS();
+        if(_peek() === "]"){ _json.pos++; return arr; }
+        _expect(",");
+      }
+    }
+    function _parseObject(){
+      _expect("{");
+      var obj = {};
+      _skipWS();
+      if(_peek() === "}"){ _json.pos++; return obj; }
+      while(true){
+        _skipWS();
+        var key = _parseString();
+        _skipWS();
+        _expect(":");
+        obj[key] = _parseValue();
+        _skipWS();
+        if(_peek() === "}"){ _json.pos++; return obj; }
+        _expect(",");
+      }
+    }
+    var result = _parseValue();
+    return result;
   }
+  var MB2_DEBUG = false;
+  function mb2Log(level, msg){
+    if(!MB2_DEBUG && level === "debug") return;
+    try{ $.writeln("[MB2:" + level + "] " + msg); }catch(_e){}
+  }
+
   function normalizeKey(s){
     return trim(String(s || "")).toLowerCase().replace(/\s+/g, "_");
   }
@@ -200,7 +310,7 @@
   }
 
   function saveSetting(sec, key, val){
-    try{ app.settings.saveSetting(sec, key, String(val)); }catch(e){}
+    try{ app.settings.saveSetting(sec, key, String(val)); }catch(e){ mb2Log("warn", "saveSetting failed: " + sec + "/" + key + " - " + e); }
   }
   function clamp01(v){
     var n = toNum(v, 0);
@@ -571,18 +681,28 @@
     return fallback;
   }
 
-  var modelCompListCache = { project: null, numItems: -1, items: null };
+  var modelCompListCache = { project: null, numItems: -1, nameHash: "", items: null };
   function invalidateModelCompListCache(){
     modelCompListCache.project = null;
     modelCompListCache.numItems = -1;
+    modelCompListCache.nameHash = "";
     modelCompListCache.items = null;
+  }
+  function computeProjectNameHash(){
+    if(!app.project) return "";
+    var parts = [];
+    for(var h=1; h<=app.project.numItems; h++){
+      try{ parts.push(app.project.item(h).name || ""); }catch(_e){ parts.push("?"); }
+    }
+    return parts.join("|");
   }
   function listModelCompsFiltered(force){
     var out = [];
     if(!app.project) return out;
     if(!force){
       try{
-        if(modelCompListCache.project && modelCompListCache.project === app.project && modelCompListCache.numItems === app.project.numItems && modelCompListCache.items){
+        var currentHash = computeProjectNameHash();
+        if(modelCompListCache.project && modelCompListCache.project === app.project && modelCompListCache.numItems === app.project.numItems && modelCompListCache.nameHash === currentHash && modelCompListCache.items){
           return modelCompListCache.items.slice(0);
         }
       }catch(_eCacheInvalid){
@@ -611,7 +731,7 @@
             guard++;
           }
           if(nm === null) continue;
-        }catch(e){}
+        }catch(e){ mb2Log("debug", "listModelCompsFiltered parentFolder check: " + e); }
       }
 
       out.push(it.name);
@@ -620,6 +740,7 @@
     out.sort();
     modelCompListCache.project = app.project;
     modelCompListCache.numItems = app.project.numItems;
+    modelCompListCache.nameHash = computeProjectNameHash();
     modelCompListCache.items = out.slice(0);
     return out;
   }
@@ -687,7 +808,7 @@
     try{
       prop.expression = expr;
       prop.expressionEnabled = true;
-    }catch(e){}
+    }catch(e){ mb2Log("warn", "setExpr failed: " + e); }
   }
 
   function applyOutroExpressions(layer, preset){
@@ -1436,23 +1557,7 @@
 
     app.beginUndoGroup("MB2 Place Preset");
     try{
-      var mp = comp.markerProperty;
-      var markerComment = buildMarkerComment(preset);
-      var tNow = comp.time;
-      addMarker(comp, preset);
       var ok = placePresetAtTime(comp, preset, comp.time);
-      // Keep timeline clean: remove only the marker we just created.
-      try{
-        for(var k=mp.numKeys; k>=1; k--){
-          var kv = mp.keyValue(k);
-          var c = kv ? (kv.comment || "") : "";
-          var t = mp.keyTime(k);
-          if(c === markerComment && Math.abs(t - tNow) < 0.0001){
-            mp.removeKey(k);
-            break;
-          }
-        }
-      }catch(_eRm){}
       if(!ok) alert("❌ Composition modèle introuvable pour le preset : " + preset.name);
       else setStatus("✅ Élément posé : " + preset.name);
     }finally{
@@ -3219,7 +3324,8 @@
             }
           }catch(_eCsv){
             ok = false;
-            stats.details.push("Ligne " + job.line + ": ECHEC execution");
+            mb2Log("error", "CSV exec line " + job.line + ": " + _eCsv);
+            stats.details.push("Ligne " + job.line + ": ECHEC execution - " + _eCsv);
           }
           if(ok) stats.created++; else stats.failed++;
         }
