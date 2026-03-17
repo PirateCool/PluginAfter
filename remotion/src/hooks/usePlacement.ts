@@ -11,10 +11,10 @@ import {TimelineEntry} from '../types';
 
 // ─── Layout constants ────────────────────────────────────────
 
-/** Y zone for overlays: vertically centered in the frame */
-const ZONE_TOP = 120;      // minimum top padding
-const ZONE_BOTTOM = 960;   // maximum bottom (1080 - 120)
-const ZONE_HEIGHT = ZONE_BOTTOM - ZONE_TOP; // 840px usable
+/** Y zone for overlays: top-right corner of the frame */
+const ZONE_TOP = 50;       // top padding — haut-droit
+const ZONE_BOTTOM = 900;   // maximum bottom
+const ZONE_HEIGHT = ZONE_BOTTOM - ZONE_TOP;
 
 /** Spacing between stacked overlays */
 const STACK_GAP_PX = 24;
@@ -80,13 +80,11 @@ export function computePlacements(
     const sameFamilyConcurrent = concurrent.filter(p => p.entry.family === entry.family);
 
     if (sameFamilyConcurrent.length === 0) {
-      // Single overlay: vertically center it in the zone
-      const y = ZONE_TOP + Math.max(0, (ZONE_HEIGHT - estHeight) / 2);
-
+      // Single overlay: top of the zone (top-right corner)
       placements.push({
         entry,
         x: 0,
-        y: Math.round(y),
+        y: ZONE_TOP,
         width: estWidth,
         height: estHeight,
       });

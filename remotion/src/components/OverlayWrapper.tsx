@@ -42,7 +42,7 @@ export const OverlayWrapper: React.FC<Props> = ({entry, children, fps, placement
       <div
         style={{
           position: 'absolute',
-          right: isVisual ? 720 : 50,
+          right: isVisual ? 720 : 30,
           top: posY,
           opacity: outro.opacity,
           transform: `translate(${outro.translateX}px, ${outro.translateY}px)`,
